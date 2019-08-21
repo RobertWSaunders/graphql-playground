@@ -44,7 +44,6 @@ module.exports = {
     localDev: [
       require.resolve('./polyfills'),
       require.resolve('react-dev-utils/webpackHotDevClient'),
-      paths.localDevIndexJs
     ]
   },
   output: {

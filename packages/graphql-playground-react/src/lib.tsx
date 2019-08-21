@@ -1,6 +1,6 @@
 import PlaygroundWrapper from './components/PlaygroundWrapper'
 import GraphQLEditor from './components/Playground/GraphQLEditor'
-import { store } from './components/GraphQLBinApp'
+import { store } from './components/ShopifyGraphiQL'
 
 export { PlaygroundWrapper as Playground, GraphQLEditor }
 

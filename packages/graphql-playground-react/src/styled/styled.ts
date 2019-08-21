@@ -24,6 +24,7 @@ export {
   createGlobalStyle,
   ThemeInterface,
 }
+
 export default styled
 
 export { ComponentClass }

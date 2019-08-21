@@ -1,9 +1,10 @@
 import { compose, createStore, Store, applyMiddleware } from 'redux'
+import rootReducer from './workspace/reducers'
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './rootSaga'
-import rootReducer from './workspace/reducers'
-import { getSelectedSession } from './sessions/selectors'
+
 import { serializeState, deserializeState } from './localStorage'
+import { getSelectedSession } from './sessions/selectors'
 
 const sagaMiddleware = createSagaMiddleware()
 const functions = [applyMiddleware(sagaMiddleware)]

@@ -61,7 +61,7 @@ export default class EndpointPopup extends React.Component<Props, State> {
           <LogoWrapper>
             <Logo>
               <img src={require('../assets/logo.png')} alt="" />
-              <Heading>GraphQL Playground</Heading>
+              <Heading>Shopify GraphQL Playground</Heading>
             </Logo>
           </LogoWrapper>
           <Form action="" onSubmit={this.submit}>

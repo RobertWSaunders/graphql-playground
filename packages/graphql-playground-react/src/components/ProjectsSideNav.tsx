@@ -1,79 +1,63 @@
 import * as React from 'react'
-import { GraphQLConfig, GraphQLConfigEnpointsMapData } from '../graphqlConfig'
-import ProjectsSideNavItem from './ProjectsSideNavItem'
-import { SettingsIcon, AddFullIcon } from './Icons'
-import { styled } from '../styled/index'
-import { getEndpointFromEndpointConfig } from './util'
-import { createStructuredSelector } from 'reselect'
-import { connect } from 'react-redux'
-import { getSessionCounts } from '../state/workspace/reducers'
 import { Map } from 'immutable'
+import { connect } from 'react-redux'
+import { createStructuredSelector } from 'reselect'
+
+import { GraphQLConfig, GraphQLConfigEnpointsMapData } from '../graphqlConfig'
 import { getWorkspaceId } from './Playground/util/getWorkspaceId'
-import { openConfigTab } from '../state/sessions/actions'
+import { getSessionCounts } from '../state/workspace/reducers'
+import ProjectsSideNavItem from './ProjectsSideNavItem'
+import { getEndpointFromEndpointConfig } from './util'
+import { styled } from '../styled/index'
 
 export interface Props {
-  config: GraphQLConfig
-  folderName: string
   theme: string
   activeEnv: string
-  onSelectEnv: (endpoint: string, projectName?: string) => void
-  onNewWorkspace?: () => void
-  showNewWorkspace: boolean
-  isElectron: boolean
-  activeProjectName?: string
   configPath?: string
+  config: GraphQLConfig
+  activeProjectName?: string
+  onSelectEnv: (endpoint: string, projectName?: string) => void
 }
 
 export interface ReduxProps {
   counts: Map<string, number>
-  openConfigTab: () => void
 }
 
 class ProjectsSideNav extends React.Component<Props & ReduxProps, {}> {
   render() {
-    const { config, folderName, onNewWorkspace, isElectron } = this.props
-    const endpoints = config.extensions && config.extensions.endpoints
+    const { config } = this.props
     const projects = config.projects
+
     return (
       <SideNav>
-        <List isElectron={isElectron}>
+        <List>
           <TitleRow>
-            <Title>{folderName}</Title>
-            <SettingsIcon
-              width={18}
-              height={18}
-              onClick={this.props.openConfigTab}
-              title="Project settings"
-            />
+            <Title>Shopify GraphiQL</Title>
           </TitleRow>
-          {endpoints && this.renderEndpoints(endpoints)}
-          {projects &&
-            Object.keys(projects).map(projectName => {
-              const project = projects[projectName]
-              const projectEndpoints =
-                project.extensions && project.extensions.endpoints
-              if (!projectEndpoints) {
-                return null
-              }
 
-              return (
-                <Project key={projectName}>
-                  <ProjectName>{projectName}</ProjectName>
-                  {this.renderEndpoints(projectEndpoints, projectName)}
-                </Project>
-              )
-            })}
+          {projects && this.renderProjects(projects)}
         </List>
-        {isElectron && (
-          <Footer>
-            <WorkspaceButton onClick={onNewWorkspace}>
-              <AddFullIcon width={14} height={14} strokeWidth={6} />
-              NEW WORKSPACE
-            </WorkspaceButton>
-          </Footer>
-        )}
       </SideNav>
     )
+  }
+
+  private renderProjects(projects) {
+    return Object.keys(projects).map(projectName => {
+      const project = projects[projectName]
+      const projectEndpoints =
+        project.extensions && project.extensions.endpoints
+
+      if (!projectEndpoints) {
+        return null
+      }
+
+      return (
+        <Project key={projectName}>
+          <ProjectName>{projectName}</ProjectName>
+          {this.renderEndpoints(projectEndpoints, projectName)}
+        </Project>
+      )
+    })
   }
 
   private renderEndpoints(
@@ -110,10 +94,7 @@ const mapStateToProps = createStructuredSelector({
   counts: getSessionCounts,
 })
 
-export default connect(
-  mapStateToProps,
-  { openConfigTab },
-)(ProjectsSideNav)
+export default connect(mapStateToProps)(ProjectsSideNav)
 
 const SideNav = styled.div`
   display: flex;
@@ -127,7 +108,7 @@ const SideNav = styled.div`
 
 const List = styled.div`
   -webkit-app-region: drag;
-  padding-top: ${(p: any) => (p.isElectron ? 48 : 20)}px;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   background: ${p => p.theme.editorColours.sidebarTop};
@@ -178,36 +159,4 @@ const ProjectName = styled.div`
   letter-spacing: 0.53px;
   margin: 0 10px 6px 30px;
   word-break: break-word;
-`
-
-const Footer = styled.div`
-  display: flex;
-  justify-content: center;
-  margin: 32px 0;
-  background: ${p => p.theme.editorColours.sidebarBottom};
-`
-
-const WorkspaceButton = styled.button`
-  padding: 10px;
-  display: flex;
-  align-items: center;
-  border-radius: 2px;
-  cursor: pointer;
-  font-size: 14px;
-  font-weight: 600;
-  letter-spacing: 0.53px;
-  color: ${p => p.theme.editorColours.buttonWorkspaceText};
-  background-color: ${p => p.theme.editorColours.buttonWorkspace};
-  transition: 0.1s linear all;
-  &:hover {
-    background-color: ${p => p.theme.editorColours.buttonWorkspaceHover};
-  }
-  i {
-    margin-right: 6px;
-  }
-  svg {
-    min-width: 18px;
-    min-height: 18px;
-    stroke: ${p => p.theme.editorColours.buttonWorkspaceText};
-  }
 `
