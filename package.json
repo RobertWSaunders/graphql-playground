@@ -67,7 +67,7 @@
     "isomorphic-fetch": "^2.2.1",
     "keycode": "^2.1.9",
     "lodash": "^4.17.11",
-    "markdown-it": "^8.4.1",
+    "markdown-it": "^12.3.2",
     "marked": "^0.3.19",
     "prettier": "^1.13.0",
     "prop-types": "^15.6.0",
