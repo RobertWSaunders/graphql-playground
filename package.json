@@ -68,7 +68,7 @@
     "keycode": "^2.1.9",
     "lodash": "^4.17.11",
     "markdown-it": "^8.4.1",
-    "marked": "^0.3.19",
+    "marked": "^4.0.10",
     "prettier": "^1.13.0",
     "prop-types": "^15.6.0",
     "query-string": "5",
